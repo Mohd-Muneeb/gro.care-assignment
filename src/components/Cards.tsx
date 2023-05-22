@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { cursorTo } from "readline";
 import type { Post } from "~/types/types";
 
 interface Props {
