@@ -41,8 +41,8 @@ const Navbar = ({ Page }: any) => {
                     </div>
                     <div className="hidden flex-none lg:block">
                         <ul className="menu menu-horizontal">
-                            <li>
-                                <a>Navbar Item 1</a>
+                            <li >
+                                <a href="/playlists">My Playlists</a>
                             </li>
                             <li>
                                 <a>Navbar Item 2</a>
