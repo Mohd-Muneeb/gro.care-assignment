@@ -24,6 +24,15 @@ export interface Post {
     };
 }
 
+export interface Creator {
+    user: {
+        name: string;
+        id: string;
+        handle: string;
+        pic: string;
+    };
+}
+
 export interface Response {
     data: {
         message: string;
@@ -33,5 +42,12 @@ export interface Response {
             page: number;
             posts: Post[];
         };
+    };
+}
+
+export interface Comments {
+    comments: {
+        count: number;
+        commentingAllowed: boolean;
     };
 }

@@ -1,6 +1,13 @@
+import { useRouter } from "next/router";
 import React from "react";
 
 const Navbar = ({ Page }: any) => {
+    const router = useRouter();
+
+    const handleHomeRouting: void = () => {
+        return router.push("/").catch((err) => console.log(err));
+    };
+
     return (
         <div className="drawer">
             <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
@@ -26,7 +33,12 @@ const Navbar = ({ Page }: any) => {
                             </svg>
                         </label>
                     </div>
-                    <div className="mx-2 flex-1 px-2">Navbar Title</div>
+                    <div
+                        className="mx-2 flex-1 px-2"
+                        onClick={handleHomeRouting}
+                    >
+                        Navbar Title
+                    </div>
                     <div className="hidden flex-none lg:block">
                         <ul className="menu menu-horizontal">
                             <li>
@@ -42,7 +54,7 @@ const Navbar = ({ Page }: any) => {
             </div>
             <div className="drawer-side">
                 <label htmlFor="my-drawer-3" className="drawer-overlay"></label>
-                <ul className="menu z-40 w-80 bg-base-100 p-4">
+                <ul className="menu z-40 w-80 bg-base-200 p-4">
                     <li>
                         <a>Sidebar Item 1</a>
                     </li>

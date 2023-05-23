@@ -3,8 +3,19 @@ import Head from "next/head";
 // import Link from "next/link";
 import Cards from "~/components/Cards";
 import type { Post, Response } from "~/types/types";
+import { updateVideos } from "~/features/videoSlice";
+import { useAppDispatch, useAppSelector } from "~/hooks";
+import Navbar from "~/components/Navbar";
+import Footer from "~/components/Footer";
 
 const Home: NextPage<Response> = ({ data }) => {
+    const videoPosts = useAppSelector((state) => state.video);
+    const dispatch = useAppDispatch();
+
+    // console.log(videoPosts);
+
+    dispatch(updateVideos(data.data.posts));
+
     return (
         <>
             <Head>
@@ -13,8 +24,8 @@ const Home: NextPage<Response> = ({ data }) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <main className="md:ml-[2.5vw] w-[95vw]">
-                <div className=" mt-4 flex flex-col md:flex-row justify-center md:flex-wrap  items-center gap-8">
+            <main className="w-[95vw] md:ml-[2.5vw]">
+                <div className=" mt-4 flex flex-col items-center justify-center gap-8  md:flex-row md:flex-wrap">
                     {data.message !== "Success" ? (
                         <>Something went wrong with server</>
                     ) : (
@@ -28,6 +39,7 @@ const Home: NextPage<Response> = ({ data }) => {
                     )}
                 </div>
             </main>
+            <Footer />
         </>
     );
 };

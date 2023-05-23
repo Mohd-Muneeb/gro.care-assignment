@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { updateCurrentVideo } from "~/features/videoSlice";
+import { useAppDispatch } from "~/hooks";
 import type { Post } from "~/types/types";
 
 interface Props {
@@ -9,10 +11,13 @@ interface Props {
 const Cards = (props: Props) => {
     const post = props.post;
     const router = useRouter();
+    const dispatch = useAppDispatch();
 
     const handleClick = () => {
+        dispatch(updateCurrentVideo(post));
+
         router
-            .push(props.post.submission.hyperlink)
+            .push(`watch?postId=${post.postId}`)
             .catch((err) => console.log(err));
     };
 
@@ -42,7 +47,7 @@ const Cards = (props: Props) => {
                     </div>
                 </div>
                 <div>
-                    <h1 className="text-base text-white">
+                    <h1 className="text-base text-primary">
                         {post.creator.handle}
                     </h1>
                     <p className="text-sm">Reactions: {post.reaction.count}</p>
