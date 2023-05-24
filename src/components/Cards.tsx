@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { updateCurrentVideo } from "~/features/videoSlice";
-import { useAppDispatch } from "~/hooks";
+import { useAppDispatch, useAppSelector } from "~/hooks";
 import type { Post } from "~/types/types";
 
 interface Props {
@@ -11,13 +11,18 @@ interface Props {
 const Cards = (props: Props) => {
     const post = props.post;
     const router = useRouter();
+    const page =
+        router.query.page != undefined
+            ? typeof router.query.page === "string"
+                ? router.query.page
+                : "0"
+            : "0";
     const dispatch = useAppDispatch();
-
     const handleClick = () => {
         dispatch(updateCurrentVideo(post));
 
         router
-            .push(`watch?postId=${post.postId}`)
+            .push(`watch?page=${page}&postId=${post.postId}`)
             .catch((err) => console.log(err));
     };
 

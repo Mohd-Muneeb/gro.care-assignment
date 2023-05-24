@@ -7,11 +7,24 @@ import { updateVideos } from "~/features/videoSlice";
 import { useAppDispatch, useAppSelector } from "~/hooks";
 import Navbar from "~/components/Navbar";
 import Footer from "~/components/Footer";
+import { useRouter } from "next/router";
+import { customPage } from "~/features/pageSlice";
 
 const Home: NextPage<Response> = ({ data }) => {
+    const router = useRouter();
+
+    const pageNumber: string | string[] | undefined = router.query.page;
+
     const videoPosts = useAppSelector((state) => state.video);
     const dispatch = useAppDispatch();
 
+    if (pageNumber !== undefined) {
+        if (typeof pageNumber == "string") {
+            dispatch(customPage(pageNumber));
+        }
+    } else {
+        dispatch(customPage("0"));
+    }
     // console.log(videoPosts);
 
     dispatch(updateVideos(data.data.posts));
@@ -44,9 +57,21 @@ const Home: NextPage<Response> = ({ data }) => {
     );
 };
 
-export async function getServerSideProps() {
+interface Query {
+    query: {
+        page: string;
+    };
+}
+
+export const getServerSideProps = async (context: Query) => {
+    let page = context.query.page;
+
+    if(page === undefined){
+        page = "0";
+    }
+
     const data: Response = await fetch(
-        "https://internship-service.onrender.com/videos?page=2"
+        `https://internship-service.onrender.com/videos?page=${page}`
     )
         .then((res) => {
             if (!res.ok) {
@@ -59,8 +84,8 @@ export async function getServerSideProps() {
         });
 
     return {
-        props: { data },
+        props: { data: data, page: page },
     };
-}
+};
 
 export default Home;

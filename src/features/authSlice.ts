@@ -3,11 +3,11 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import type { User } from "firebase/auth";
 
 const initialState = {
-    user: undefined,
+    user: null,
 };
 
 interface State {
-    user: User | undefined;
+    user: User | null;
 }
 
 const userSlice = createSlice({
@@ -18,7 +18,7 @@ const userSlice = createSlice({
             state.user = action.payload;
         },
         removeUser(state) {
-            state.user = undefined;
+            state.user = null;
         },
     },
 });

@@ -1,11 +1,21 @@
 import { useRouter } from "next/router";
 import React from "react";
+import auth from "~/auth";
+import { addUser } from "~/features/authSlice";
+import { useAppDispatch } from "~/hooks";
 
 const Navbar = ({ Page }: any) => {
     const router = useRouter();
 
-    const handleHomeRouting: void = () => {
-        return router.push("/").catch((err) => console.log(err));
+    const dispatch = useAppDispatch();
+    if (auth.currentUser) {
+        dispatch(addUser(auth.currentUser));
+    }
+
+    const handleHomeRouting = (): void => {
+        const success = router.push("/").catch((err) => console.log(err));
+        console.log(success);
+        return;
     };
 
     return (
@@ -41,7 +51,7 @@ const Navbar = ({ Page }: any) => {
                     </div>
                     <div className="hidden flex-none lg:block">
                         <ul className="menu menu-horizontal">
-                            <li >
+                            <li>
                                 <a href="/playlists">My Playlists</a>
                             </li>
                             <li>
