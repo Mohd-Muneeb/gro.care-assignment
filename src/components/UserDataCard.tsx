@@ -24,7 +24,7 @@ const UserDataCard = (props: userData) => {
                 </div>
                 <div>
                     <h1 className="text-lg text-info-content">{props.user.handle}</h1>
-                    <p>{props.user.name}</p>
+                    <p>{props.user.name}</p>    
                 </div>
             </div>
             <hr className="mb-4 ml-[5%] w-[90%] border-2 border-solid border-base-300" />

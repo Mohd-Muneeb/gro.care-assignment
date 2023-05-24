@@ -11,10 +11,10 @@ interface State {
 }
 
 const userSlice = createSlice({
-    name: "page",
+    name: "user",
     initialState,
     reducers: {
-        addUser(state: State, action: PayloadAction<User>) {
+        addUser(state: State, action: PayloadAction<User | null>) {
             state.user = action.payload;
         },
         removeUser(state) {

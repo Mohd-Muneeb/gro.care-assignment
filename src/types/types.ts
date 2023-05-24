@@ -47,7 +47,21 @@ export interface Response {
 
 export interface Comments {
     comments: {
+        reaction: number
         count: number;
         commentingAllowed: boolean;
     };
+}
+
+interface Playlist {
+    name: string;
+    createdAt: Date;
+    size: number;
+    id: string;
+    items: PlaylistItem[];
+}
+
+interface PlaylistItem {
+    posts: Post[];
+    page: string;
 }

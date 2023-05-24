@@ -6,29 +6,10 @@ import UserDataCard from "~/components/UserDataCard";
 import CommentContainer from "~/components/CommentContainer";
 import RecommendedContainer from "~/components/RecommendedContainer";
 import Footer from "~/components/Footer";
-import {
-    // EmailShareButton,
-    FacebookShareButton,
-    // HatenaShareButton,
-    InstapaperShareButton,
-    // LineShareButton,
-    // LinkedinShareButton,
-    // LivejournalShareButton,
-    // MailruShareButton,
-    // OKShareButton,
-    // PinterestShareButton,
-    // PocketShareButton,
-    RedditShareButton,
-    TelegramShareButton,
-    // TumblrShareButton,
-    TwitterShareButton,
-    // ViberShareButton,
-    // VKShareButton,
-    WhatsappShareButton,
-    // WorkplaceShareButton
-} from "react-share";
+
 import { type NextPage } from "next";
 import type { Post } from "~/types/types";
+import ShareContainer from "~/components/ShareContainer";
 
 interface PageProps {
     page: string;
@@ -90,9 +71,12 @@ const Watch: NextPage<PageProps> = (props) => {
                                     user={currentPost?.creator}
                                 />
                                 <hr className="mt-4" />
+                                <div>
+                                    <ShareContainer />
+                                </div>
                                 <div className="mt-4">
                                     <CommentContainer
-                                        comments={currentPost.comment}
+                                        comments={{reaction: currentPost.reaction.count, ...currentPost.comment}}
                                     />
                                 </div>
                                 <hr className="mt-4" />

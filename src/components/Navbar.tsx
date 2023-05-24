@@ -1,17 +1,25 @@
+import { onAuthStateChanged } from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
 import auth from "~/auth";
 import { addUser } from "~/features/authSlice";
-import { useAppDispatch } from "~/hooks";
+import { useAppDispatch, useAppSelector } from "~/hooks";
 
 const Navbar = ({ Page }: any) => {
     const router = useRouter();
 
     const dispatch = useAppDispatch();
-    if (auth.currentUser) {
-        dispatch(addUser(auth.currentUser));
-    }
+
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            dispatch(addUser(user));
+        } else {
+            dispatch(addUser(null));
+        }
+    });
+
+    const user = useAppSelector((state) => state.auth.user);
 
     const handleHomeRouting = (): void => {
         const success = router.push("/").catch((err) => console.log(err));
@@ -48,7 +56,9 @@ const Navbar = ({ Page }: any) => {
                         className="mx-2 flex-1 px-2"
                         onClick={handleHomeRouting}
                     >
-                        Navbar Title
+                        <button className="btn btn-ghost">
+                            <h1 className="text-lg font-medium">ShortsTube</h1>
+                        </button>
                     </div>
                     <div className="hidden flex-none lg:block">
                         <ul className="menu menu-horizontal">
@@ -56,7 +66,11 @@ const Navbar = ({ Page }: any) => {
                                 <Link href="/playlists">My Playlists</Link>
                             </li>
                             <li>
-                                <Link href="/auth">Sign Up</Link>
+                                {user !== null ? (
+                                    <Link href="/">Log out</Link>
+                                ) : (
+                                    <Link href="/auth">Sign Up</Link>
+                                )}
                             </li>
                         </ul>
                     </div>
