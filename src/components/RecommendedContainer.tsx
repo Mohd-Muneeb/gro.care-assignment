@@ -2,14 +2,14 @@ import { useRouter } from "next/router";
 import React from "react";
 import { useAppSelector } from "~/hooks";
 import Cards from "./Cards";
-import { Post } from "~/types/types";
+import type { Post } from "~/types/types";
 
 const RecommendedContainer = () => {
     const posts = useAppSelector((state) => state.video.posts);
     const router = useRouter();
 
     const query = router.query.postId;
-    console.log(posts);
+    // console.log(posts);
 
     const checkValidity = (elem: Post) => {
         return query !== elem.postId;

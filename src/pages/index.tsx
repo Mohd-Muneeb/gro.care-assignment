@@ -4,8 +4,7 @@ import Head from "next/head";
 import Cards from "~/components/Cards";
 import type { Post, Response } from "~/types/types";
 import { updateVideos } from "~/features/videoSlice";
-import { useAppDispatch, useAppSelector } from "~/hooks";
-import Navbar from "~/components/Navbar";
+import { useAppDispatch } from "~/hooks";
 import Footer from "~/components/Footer";
 import { useRouter } from "next/router";
 import { customPage } from "~/features/pageSlice";
@@ -15,7 +14,7 @@ const Home: NextPage<Response> = ({ data }) => {
 
     const pageNumber: string | string[] | undefined = router.query.page;
 
-    const videoPosts = useAppSelector((state) => state.video);
+    // const videoPosts = useAppSelector((state) => state.video);
     const dispatch = useAppDispatch();
 
     if (pageNumber !== undefined) {

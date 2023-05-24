@@ -1,29 +1,76 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useRouter } from "next/router";
-import { useAppDispatch, useAppSelector } from "~/hooks";
-import { updateCurrentVideo } from "~/features/videoSlice";
+import { useAppDispatch } from "~/hooks";
+import { updateVideos } from "~/features/videoSlice";
 import UserDataCard from "~/components/UserDataCard";
 import CommentContainer from "~/components/CommentContainer";
 import RecommendedContainer from "~/components/RecommendedContainer";
 import Footer from "~/components/Footer";
+import {
+    // EmailShareButton,
+    FacebookShareButton,
+    // HatenaShareButton,
+    InstapaperShareButton,
+    // LineShareButton,
+    // LinkedinShareButton,
+    // LivejournalShareButton,
+    // MailruShareButton,
+    // OKShareButton,
+    // PinterestShareButton,
+    // PocketShareButton,
+    RedditShareButton,
+    TelegramShareButton,
+    // TumblrShareButton,
+    TwitterShareButton,
+    // ViberShareButton,
+    // VKShareButton,
+    WhatsappShareButton,
+    // WorkplaceShareButton
+} from "react-share";
+import { type NextPage } from "next";
+import type { Post } from "~/types/types";
 
-const Watch = () => {
+interface PageProps {
+    page: string;
+    postId: string;
+    data: Response;
+}
+
+export interface Response {
+    message: string;
+
+    data: {
+        offset: number;
+        page: number;
+        posts: Post[];
+    };
+}
+
+const Watch: NextPage<PageProps> = (props) => {
     const router = useRouter();
-    const query = router.query;
-    const currentPost = useAppSelector((state) => state.video.currentVideo);
     const dispatch = useAppDispatch();
 
-    useEffect(() => {
-        if (currentPost?.postId !== query.postId) {
-            dispatch(updateCurrentVideo(null));
-            router.push("/").catch((err) => console.log(err));
-        }
-    }, []);
+    const allPosts = props.data.data.posts;
+
+    dispatch(updateVideos(allPosts));
+
+    const pageNumber = router.query.page;
+
+    const currentPost = allPosts.find(
+        (elem) => elem.postId === router.query.postId
+    );
+
+    if (pageNumber === undefined) {
+        return (
+            <>
+                <div>video not found, please check the url</div>
+            </>
+        );
+    }
 
     return (
         <>
             <div className="h-full">
-                {/* <h1>Welcome, you can watch videos here</h1> */}
                 <div className="flex">
                     <div className="flex w-screen items-center justify-center bg-black">
                         <video
@@ -49,20 +96,57 @@ const Watch = () => {
                                     />
                                 </div>
                                 <hr className="mt-4" />
-                                
                             </>
                         ) : (
                             <></>
                         )}
                     </div>
-                    <div className="w-full ml-[2.5vw]">
+                    <div className="ml-[2.5vw] w-full">
                         <RecommendedContainer />
                     </div>
                 </div>
-            <Footer />
+                <Footer />
             </div>
         </>
     );
+};
+
+interface Query {
+    query: {
+        page: string;
+        postId: string;
+    };
+}
+
+export const getServerSideProps = async (context: Query) => {
+    let pageNumber = context.query.page;
+    if (pageNumber === undefined) {
+        pageNumber = "0";
+    } else {
+        pageNumber = pageNumber;
+    }
+    const postId = context.query.postId;
+
+    const data: Response = await fetch(
+        `https://internship-service.onrender.com/videos?page=${pageNumber}`
+    )
+        .then((res) => {
+            if (!res.ok) {
+                throw new Error(res.statusText);
+            }
+            return res.json();
+        })
+        .then((res: Response) => {
+            return res;
+        });
+
+    return {
+        props: {
+            page: pageNumber,
+            data: data,
+            postId: postId,
+        },
+    };
 };
 
 export default Watch;
