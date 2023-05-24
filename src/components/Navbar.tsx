@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import auth from "~/auth";
@@ -52,10 +53,10 @@ const Navbar = ({ Page }: any) => {
                     <div className="hidden flex-none lg:block">
                         <ul className="menu menu-horizontal">
                             <li>
-                                <a href="/playlists">My Playlists</a>
+                                <Link href="/playlists">My Playlists</Link>
                             </li>
                             <li>
-                                <a>Navbar Item 2</a>
+                                <Link href="/auth">Sign Up</Link>
                             </li>
                         </ul>
                     </div>
