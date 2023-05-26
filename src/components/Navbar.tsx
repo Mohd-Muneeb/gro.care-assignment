@@ -1,12 +1,19 @@
 import { onAuthStateChanged, signOut } from "firebase/auth";
+import { NextPage } from "next";
+import { AppType } from "next/app";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React, { ReactNode, useEffect } from "react";
 import auth from "~/auth";
 import { addUser } from "~/features/authSlice";
 import { useAppDispatch, useAppSelector } from "~/hooks";
 
-const Navbar = ({ Page }: any) => {
+interface ReactPage {
+    Page: ReactNode;
+}
+
+const Navbar = (props: ReactPage) => {
+    const Page = props.Page;
     const router = useRouter();
 
     const dispatch = useAppDispatch();

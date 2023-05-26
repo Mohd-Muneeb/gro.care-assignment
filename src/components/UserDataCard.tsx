@@ -1,6 +1,5 @@
 import Image from "next/image";
 import React, { useState } from "react";
-import { boolean } from "zod";
 import type { Creator } from "~/types/types";
 
 interface userData extends Creator {
@@ -10,7 +9,7 @@ interface userData extends Creator {
 
 const UserDataCard = (props: userData) => {
     const [Active, setActive] = useState<boolean>(false);
-    // console.log(props.user);
+    
     return (
         <div className=" rounded-lg bg-base-200">
             <div className="my-2 min-w-[45vw] rounded-lg bg-base-300 p-4">
