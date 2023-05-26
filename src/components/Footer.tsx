@@ -6,7 +6,13 @@ const Footer = () => {
             <div className="grid grid-flow-col gap-4">
                 <a className="link-hover link">About us</a>
                 <a className="link-hover link">Contact</a>
-                <a className="link-hover link">Github</a>
+                <a
+                    className="link-hover link"
+                    href="https://github.com/Mohd-Muneeb/gro.care-assignment"
+                    target="_blank"
+                >
+                    Github
+                </a>
             </div>
 
             <div>
