@@ -1,4 +1,4 @@
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
@@ -67,7 +67,18 @@ const Navbar = ({ Page }: any) => {
                             </li>
                             <li>
                                 {user !== null ? (
-                                    <Link href="/">Log out</Link>
+                                    <Link
+                                        href="/"
+                                        onClick={() => {
+                                            signOut(auth)
+                                                .then(() => router.reload())
+                                                .catch((err) =>
+                                                    console.log(err)
+                                                );
+                                        }}
+                                    >
+                                        Log out
+                                    </Link>
                                 ) : (
                                     <Link href="/auth">Sign Up</Link>
                                 )}
