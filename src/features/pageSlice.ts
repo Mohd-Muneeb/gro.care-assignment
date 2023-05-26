@@ -10,12 +10,12 @@ const pageSlice = createSlice({
     initialState,
     reducers: {
         incrementPage(state) {
-            const temp = parseInt(state.page) + 1;
-            state.page = (temp).toString();
+            const temp1 = parseInt(state.page) + 1;
+            state.page = (temp1).toString();
         },
         decrementPage(state) {
-            let temp = parseInt(state.page);
-            state.page = (temp--).toString();
+            const temp2 = parseInt(state.page) - 1;
+            state.page = (temp2).toString();
         },
         customPage(state, action: PayloadAction<string>) {
             state.page = action.payload;

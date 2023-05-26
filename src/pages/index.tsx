@@ -11,12 +11,24 @@ import { customPage, decrementPage, incrementPage } from "~/features/pageSlice";
 import React, { useEffect, useState } from "react";
 // import { current } from "@reduxjs/toolkit";
 
+interface CustomResponse {
+    message: string;
+
+    data: {
+        offset: number;
+        page: number;
+        posts: Post[];
+    };
+}
+
 const Home: NextPage<Response> = ({ data }) => {
     const router = useRouter();
 
     const pageNumber: string | string[] | undefined = router.query.page;
 
-    const currentPage = useAppSelector((state) => state.page.page);
+    const currentPage = useAppSelector((state) => {
+        return state.page.page;
+    });
     const dispatch = useAppDispatch();
 
     const videos = useAppSelector((state) => state.video.posts);
@@ -34,19 +46,35 @@ const Home: NextPage<Response> = ({ data }) => {
         dispatch(updateVideos(data.data.posts));
     }, []);
 
-
-    const handleBackward = () => {
-        console.log(currentPage);
+    const handleBackward = async () => {
         if (currentPage === "0") {
-            return;
+            alert("Current page is already 0");
         } else {
             dispatch(decrementPage());
+            console.log(currentPage);
+            await fetch(
+                `https://internship-service.onrender.com/videos?page=${
+                    parseInt(currentPage) + 1
+                }`
+            )
+                .then((res) => {
+                    if (!res.ok) {
+                        throw new Error(res.statusText);
+                    }
+                    return res.json();
+                })
+                .then((res: CustomResponse) => {
+                    dispatch(updateVideos(res.data.posts));
+                    return res;
+                })
+                .catch((err) => console.log(err));
+            return;
         }
     };
 
     const handleForward = async () => {
-        console.log(currentPage);
         dispatch(incrementPage());
+        console.log(currentPage);
         await fetch(
             `https://internship-service.onrender.com/videos?page=${
                 parseInt(currentPage) + 1
@@ -59,7 +87,7 @@ const Home: NextPage<Response> = ({ data }) => {
 
                 return res.json();
             })
-            .then((res: Response) => {
+            .then((res: CustomResponse) => {
                 dispatch(updateVideos(res.data.posts));
                 return res;
             })
@@ -90,14 +118,26 @@ const Home: NextPage<Response> = ({ data }) => {
                 <hr className="my-8" />
                 <div className="my-4 flex items-center justify-center">
                     <div className="btn-group">
-                        <button className="btn" onClick={handleBackward}>
+                        <button
+                            className={
+                                currentPage === "0" ? "btn-disabled btn" : "btn"
+                            }
+                            onClick={() => {
+                                handleBackward().catch((err: string) => {
+                                    throw new Error(err);
+                                });
+                                return;
+                            }}
+                        >
                             «
                         </button>
                         <button className="btn">
                             Page {parseInt(currentPage) + 1}
                         </button>
                         <button
-                            className="btn"
+                            className={
+                                currentPage === "" ? "btn-disabled btn" : "btn"
+                            }
                             onClick={() => {
                                 handleForward().catch((err: string) => {
                                     throw new Error(err);
