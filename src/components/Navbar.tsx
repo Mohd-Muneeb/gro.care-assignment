@@ -99,10 +99,23 @@ const Navbar = (props: ReactPage) => {
                 <label htmlFor="my-drawer-3" className="drawer-overlay"></label>
                 <ul className="menu z-40 w-80 bg-base-200 p-4">
                     <li>
-                        <a>Sidebar Item 1</a>
+                        <Link href="/playlists">My Playlists</Link>
                     </li>
                     <li>
-                        <a>Sidebar Item 2</a>
+                        {user !== null ? (
+                            <Link
+                                href="/"
+                                onClick={() => {
+                                    signOut(auth)
+                                        .then(() => router.reload())
+                                        .catch((err) => console.log(err));
+                                }}
+                            >
+                                Log out
+                            </Link>
+                        ) : (
+                            <Link href="/auth">Sign Up</Link>
+                        )}
                     </li>
                 </ul>
             </div>
