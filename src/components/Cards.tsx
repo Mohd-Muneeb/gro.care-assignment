@@ -10,19 +10,20 @@ interface Props {
 
 const Cards = (props: Props) => {
     const post = props.post;
+    const currentPage = useAppSelector(state => state.page.page);
     const router = useRouter();
-    const page =
-        router.query.page != undefined
-            ? typeof router.query.page === "string"
-                ? router.query.page
-                : "0"
-            : "0";
+    // const page =
+    //     router.query.page != undefined
+    //         ? typeof router.query.page === "string"
+    //             ? router.query.page
+    //             : "0"
+    //         : "0";
     const dispatch = useAppDispatch();
     const handleClick = () => {
         dispatch(updateCurrentVideo(post));
 
         router
-            .push(`watch?page=${page}&postId=${post.postId}`)
+            .push(`watch?page=${currentPage}&postId=${post.postId}`)
             .catch((err) => console.log(err));
     };
 
