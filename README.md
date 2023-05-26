@@ -25,11 +25,11 @@ to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
-##Live Hosting
+**#Live Hosting**
 
 This website has been hosted live at the [link](https://shorttube.netlify.app/)
 
-##Images
+**##Images**
 
 ![image1-temp](https://github.com/Mohd-Muneeb/gro.care-assignment/assets/51262281/4944416f-a412-4175-a2d5-4bcb50bbf30e)
 
