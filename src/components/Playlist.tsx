@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import arrow from "../assets/right-arrow-recentSearch.svg";
+// import from "../assets/right-arrow-recentSearch.svg";
 import { useAppSelector } from "~/hooks";
 
 const Playlist = () => {
@@ -28,7 +28,7 @@ const Playlist = () => {
                 <div className="absolute right-12 top-12 opacity-20 hover:opacity-100">
                     <Link href="/pets">
                         <Image
-                            src={arrow}
+                            src="../assets/right-arrow-recentSearch.svg"
                             alt="Right arrow"
                             height={30}
                             width={30}
