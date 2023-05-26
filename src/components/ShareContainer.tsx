@@ -1,11 +1,9 @@
-import { useRouter } from "next/router";
 import React from "react";
 import {
     FacebookIcon,
     FacebookShareButton,
     RedditIcon,
     RedditShareButton,
-    TelegramShareButton,
     TwitterIcon,
     TwitterShareButton,
     WhatsappIcon,

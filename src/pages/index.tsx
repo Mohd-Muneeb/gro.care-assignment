@@ -4,29 +4,74 @@ import Head from "next/head";
 import Cards from "~/components/Cards";
 import type { Post, Response } from "~/types/types";
 import { updateVideos } from "~/features/videoSlice";
-import { useAppDispatch } from "~/hooks";
+import { useAppDispatch, useAppSelector } from "~/hooks";
 import Footer from "~/components/Footer";
 import { useRouter } from "next/router";
-import { customPage } from "~/features/pageSlice";
+import { customPage, decrementPage, incrementPage } from "~/features/pageSlice";
+import React, { useEffect, useState } from "react";
+// import { current } from "@reduxjs/toolkit";
 
 const Home: NextPage<Response> = ({ data }) => {
     const router = useRouter();
 
     const pageNumber: string | string[] | undefined = router.query.page;
 
-    // const videoPosts = useAppSelector((state) => state.video);
+    const currentPage = useAppSelector((state) => state.page.page);
     const dispatch = useAppDispatch();
 
-    if (pageNumber !== undefined) {
-        if (typeof pageNumber == "string") {
-            dispatch(customPage(pageNumber));
-        }
-    } else {
-        dispatch(customPage("0"));
-    }
-    // console.log(videoPosts);
+    const videos = useAppSelector((state) => state.video.posts);
 
-    dispatch(updateVideos(data.data.posts));
+    const [ActiveVideos, setActiveVideos] = useState<Post[]>([]);
+
+    useEffect(() => {
+        if (pageNumber !== undefined) {
+            if (typeof pageNumber == "string") {
+                dispatch(customPage(pageNumber));
+            }
+        } else {
+            dispatch(customPage("0"));
+        }
+        dispatch(updateVideos(data.data.posts));
+    }, []);
+
+
+    const handleBackward = () => {
+        console.log(currentPage);
+        if (currentPage === "0") {
+            return;
+        } else {
+            dispatch(decrementPage());
+        }
+    };
+
+    const handleForward = async () => {
+        console.log(currentPage);
+        dispatch(incrementPage());
+        await fetch(
+            `https://internship-service.onrender.com/videos?page=${
+                parseInt(currentPage) + 1
+            }`
+        )
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error(res.statusText);
+                }
+
+                return res.json();
+            })
+            .then((res: Response) => {
+                dispatch(updateVideos(res.data.posts));
+                return res;
+            })
+            .catch((err) => console.log(err));
+        return;
+    };
+
+    useEffect(() => {
+        setActiveVideos(videos);
+
+        return () => setActiveVideos([]);
+    }, [videos]);
 
     return (
         <>
@@ -36,21 +81,35 @@ const Home: NextPage<Response> = ({ data }) => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <main className="w-[95vw] md:ml-[2.5vw]">
+            <div className="w-[95vw] md:ml-[2.5vw]">
                 <div className=" mt-4 flex flex-col items-center justify-center gap-8  md:flex-row md:flex-wrap">
-                    {data.message !== "Success" ? (
-                        <>Something went wrong with server</>
-                    ) : (
-                        data.data.posts.map((post: Post) => {
-                            return (
-                                <>
-                                    <Cards post={post} key={post.postId} />
-                                </>
-                            );
-                        })
-                    )}
+                    {ActiveVideos.map((post: Post) => {
+                        return <Cards post={post} key={post.postId} />;
+                    })}
                 </div>
-            </main>
+                <hr className="my-8" />
+                <div className="my-4 flex items-center justify-center">
+                    <div className="btn-group">
+                        <button className="btn" onClick={handleBackward}>
+                            «
+                        </button>
+                        <button className="btn">
+                            Page {parseInt(currentPage) + 1}
+                        </button>
+                        <button
+                            className="btn"
+                            onClick={() => {
+                                handleForward().catch((err: string) => {
+                                    throw new Error(err);
+                                });
+                                return;
+                            }}
+                        >
+                            »
+                        </button>
+                    </div>
+                </div>
+            </div>
             <Footer />
         </>
     );
@@ -65,7 +124,7 @@ interface Query {
 export const getServerSideProps = async (context: Query) => {
     let page = context.query.page;
 
-    if(page === undefined){
+    if (page === undefined) {
         page = "0";
     }
 

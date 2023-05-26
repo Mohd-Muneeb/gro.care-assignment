@@ -56,7 +56,7 @@ const Navbar = ({ Page }: any) => {
                         className="mx-2 flex-1 px-2"
                         onClick={handleHomeRouting}
                     >
-                        <button className="btn btn-ghost">
+                        <button className="btn-ghost btn">
                             <h1 className="text-lg font-medium">ShortsTube</h1>
                         </button>
                     </div>

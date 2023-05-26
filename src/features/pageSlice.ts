@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-// import { type Post } from "~/types/types";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -11,8 +10,8 @@ const pageSlice = createSlice({
     initialState,
     reducers: {
         incrementPage(state) {
-            let temp = parseInt(state.page);
-            state.page = (temp++).toString();
+            const temp = parseInt(state.page) + 1;
+            state.page = (temp).toString();
         },
         decrementPage(state) {
             let temp = parseInt(state.page);

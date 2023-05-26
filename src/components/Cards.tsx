@@ -28,8 +28,7 @@ const Cards = (props: Props) => {
 
     return (
         <div
-            className=""
-            onClick={() => handleClick()}
+        onClick={() => handleClick()}
             style={{ cursor: "pointer" }}
         >
             <div className="relative aspect-[9/16] w-[70vw] md:w-[15vw]">
