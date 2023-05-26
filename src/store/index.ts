@@ -9,6 +9,10 @@ export const store = configureStore({
         page: pageSlice,
         auth: authSlice,
     },
+    middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export type AppDispatch = typeof store.dispatch;
